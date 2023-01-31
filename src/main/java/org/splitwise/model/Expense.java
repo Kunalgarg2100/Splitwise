@@ -10,16 +10,28 @@ public class Expense {
     private final List<String> involvedUsers;
     private HashMap<String,Double> splits;
 
+    public ExpenseType getExpenseType() {
+        return expenseType;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public List<String> getInvolvedUsers() {
+        return involvedUsers;
+    }
+
     public HashMap<String, Double> getSplits() {
         return splits;
     }
 
-    public void setSplits(HashMap<String, Double> splits) {
-        this.splits = splits;
-    }
-
     public String getPaidBy() {
         return paidBy;
+    }
+
+    public void setSplits(HashMap<String, Double> splits) {
+        this.splits = splits;
     }
 
     public void setPaidBy(String paidBy) {

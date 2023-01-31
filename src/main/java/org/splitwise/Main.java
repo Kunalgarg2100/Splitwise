@@ -3,10 +3,7 @@ package org.splitwise;
 import org.splitwise.api.ExpenseManager;
 import org.splitwise.exception.ExactSplitException;
 import org.splitwise.exception.ExpenseTypeNotDefined;
-import org.splitwise.model.ExactExpense;
 import org.splitwise.model.ExpenseFactory;
-import org.splitwise.model.ExpenseType;
-import org.splitwise.model.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,8 +15,8 @@ public class Main {
         expenseManager.addUser( "u1", "Kunal", "KG@email.com", 82734982 );
         expenseManager.addUser( "u2", "Muskan", "MJ@email.com", 82734932 );
 
-        List<String> list = new ArrayList<String>(Arrays.asList("u1","u2"));
-        List<Double> list1 = new ArrayList<Double>(Arrays.asList(25.0,175.0));
+        List<String> list = new ArrayList<>(Arrays.asList("u1", "u2"));
+        List<Double> list1 = new ArrayList<>(Arrays.asList(25.0, 75.0));
         //Adding elements in the List
 
 

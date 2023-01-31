@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ExpenseManager {
     private volatile static ExpenseManager INSTANCE = null;
-    private ExpenseService expenseService;
+    private final ExpenseService expenseService;
 
     private ExpenseManager() {
         expenseService = new ExpenseService();

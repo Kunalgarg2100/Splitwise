@@ -6,7 +6,7 @@ import java.util.List;
 public class EqualExpense implements SplitExpense{
     private final ExpenseType expenseType = ExpenseType.EQUAL;
     public Expense getSplit(String paidBy, double amount, List<String> involvedUsers, List<Double> values) {
-        HashMap<String,Double> splits = new HashMap<String,Double>();
+        HashMap<String,Double> splits = new HashMap<>();
         double splitAmount = amount / involvedUsers.size();
         double remAmount = 0;
         for (String u : involvedUsers) {

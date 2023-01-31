@@ -1,7 +1,6 @@
 package org.splitwise.services;
 
 import org.splitwise.model.Expense;
-import org.splitwise.model.ExpenseType;
 import org.splitwise.model.SplitExpense;
 import org.splitwise.model.User;
 
@@ -16,15 +15,15 @@ public class ExpenseService {
     final HashMap<String, HashMap<String, Double> > balanceSheet;
 
     public ExpenseService(){
-        this.expenses = new ArrayList<Expense>();
-        this.balanceSheet = new HashMap<String, HashMap<String, Double> >();
-        this.userMap = new HashMap<String, User >();
+        this.expenses = new ArrayList<>();
+        this.balanceSheet = new HashMap<>();
+        this.userMap = new HashMap<>();
     }
 
     public void addUser( String userID, String name, String email, int mobileNum ){
         User user = new User( userID, name, email, mobileNum );
         userMap.put( userID, user );
-        balanceSheet.put( userID, new HashMap< String, Double>() );
+        balanceSheet.put( userID, new HashMap<>() );
         System.out.printf("User %s has been added\n", name );
     }
 
@@ -53,13 +52,11 @@ public class ExpenseService {
     }
 
     public void showBalanceSheet( ) {
-        balanceSheet.forEach( (paidBy, balances) -> {
-            balances.forEach( (paidTo, amount) -> {
-                if ( amount > 0) {
-                    printBalance( paidBy, amount, paidTo );
-                }
-            });
-        });
+        balanceSheet.forEach( (paidBy, balances) -> balances.forEach( (paidTo, amount) -> {
+            if ( amount > 0) {
+                printBalance( paidBy, amount, paidTo );
+            }
+        }));
     }
 
     public void printBalance( String paidBy, double amount, String paidTo ) {
