@@ -19,7 +19,6 @@ public class Main {
         List<Double> list1 = new ArrayList<>(Arrays.asList(25.0, 75.0));
         //Adding elements in the List
 
-
         expenseManager.addExpense( ExpenseFactory.getExpenseClass("PERCENT"), "u1", 300, list, list1 );
         expenseManager.showExpense();
         System.out.println("Hello world!");

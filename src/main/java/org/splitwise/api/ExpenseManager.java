@@ -8,17 +8,19 @@ import org.splitwise.services.ExpenseService;
 import java.util.List;
 
 public class ExpenseManager {
-    private volatile static ExpenseManager INSTANCE = null;
+    private static volatile ExpenseManager INSTANCE = null;
     private final ExpenseService expenseService;
 
     private ExpenseManager() {
         expenseService = new ExpenseService();
     }
     public static ExpenseManager getINSTANCE() {
-        if( INSTANCE == null ){
-            INSTANCE = new ExpenseManager( );
+        synchronized (ExpenseManager.class) {
+            if (INSTANCE == null) {
+                INSTANCE = new ExpenseManager();
+            }
+            return INSTANCE;
         }
-        return INSTANCE;
     }
     public void addUser( String userID, String name, String email, int mobileNum ){
         expenseService.addUser( userID, name, email, mobileNum );
