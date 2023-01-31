@@ -2,6 +2,7 @@ package org.splitwise.services;
 
 import org.splitwise.model.Expense;
 import org.splitwise.model.ExpenseType;
+import org.splitwise.model.SplitExpense;
 import org.splitwise.model.User;
 
 import java.util.ArrayList;
@@ -10,9 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 public class ExpenseService {
-    List<Expense> expenses;
-    HashMap<String,User> userMap;
-    HashMap<String, HashMap<String, Double> > balanceSheet;
+    final List<Expense> expenses;
+    final HashMap<String,User> userMap;
+    final HashMap<String, HashMap<String, Double> > balanceSheet;
 
     public ExpenseService(){
         this.expenses = new ArrayList<Expense>();
@@ -27,43 +28,9 @@ public class ExpenseService {
         System.out.printf("User %s has been added\n", name );
     }
 
-    public Expense createExpense( ExpenseType expenseType, String paidBy, double amount, List<String> involvedUsers, List<Double> values ){
-        HashMap<String,Double> splits = new HashMap<String,Double>();
-        Expense expense = null;
-        switch (expenseType) {
-            case EQUAL:
-                double splitAmount = amount / involvedUsers.size();
-                double remAmount = 0;
-                for (String u : involvedUsers) {
-                    if (u != paidBy) {
-                        remAmount = remAmount + splitAmount;
-                        splits.put(u, splitAmount);
-                    }
-                }
-                if (amount - remAmount > 0)
-                    splits.put(paidBy, amount - remAmount);
-                expense = new Expense(expenseType, paidBy, amount, involvedUsers, splits);
-                expenses.add(expense);
-                break;
-            case EXACT:
-                for (int i = 0; i < involvedUsers.size(); i++) {
-                    splits.put(involvedUsers.get(i), values.get(i));
-                }
-                ;
-                expense = new Expense(expenseType, paidBy, amount, involvedUsers, splits);
-                expenses.add(expense);
-                break;
-            case PERCENT:
-                for (int i = 0; i < involvedUsers.size(); i++) {
-                    splits.put(involvedUsers.get(i), amount * values.get(i) * 0.01 );
-                }
-                ;
-                expense = new Expense(expenseType, paidBy, amount, involvedUsers, splits);
-                expenses.add(expense);
-                break;
-            default:
-                break;
-        };
+    public Expense createExpense( SplitExpense expenseType, String paidBy, double amount, List<String> involvedUsers, List<Double> values ){
+        Expense expense = expenseType.getSplit(paidBy,amount, involvedUsers, values);
+        expenses.add(expense);
         return expense;
     }
 
@@ -83,17 +50,16 @@ public class ExpenseService {
                 balances.put(paidBy, 0.0);
             balances.put(paidBy, balances.get(paidBy) - amount);
         }
-    };
+    }
 
     public void showBalanceSheet( ) {
-        for(Map.Entry<String, HashMap<String, Double>> balances: balanceSheet.entrySet() ) {
-            String paidBy = balances.getKey();
-            for (Map.Entry<String, Double> userBalance : balances.getValue().entrySet()) {
-                if (userBalance.getValue() > 0) {
-                    printBalance( paidBy, userBalance.getValue(), userBalance.getKey() );
+        balanceSheet.forEach( (paidBy, balances) -> {
+            balances.forEach( (paidTo, amount) -> {
+                if ( amount > 0) {
+                    printBalance( paidBy, amount, paidTo );
                 }
-            }
-        }
+            });
+        });
     }
 
     public void printBalance( String paidBy, double amount, String paidTo ) {

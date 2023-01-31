@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Expense {
-    private ExpenseType expenseType;
+    private final ExpenseType expenseType;
     private String paidBy;
-    private double amount;
+    private final double amount;
+    private final List<String> involvedUsers;
+    private HashMap<String,Double> splits;
 
     public HashMap<String, Double> getSplits() {
         return splits;
@@ -23,9 +25,6 @@ public class Expense {
     public void setPaidBy(String paidBy) {
         this.paidBy = paidBy;
     }
-
-    private List<String> involvedUsers;
-    private HashMap<String,Double> splits;
 
     public Expense(ExpenseType expenseType, String paidBy, double amount, List<String> involvedUsers, HashMap<String,Double> splits ) {
         this.expenseType = expenseType;
